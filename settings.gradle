@@ -1,0 +1,2 @@
+rootProject.name='Siscambp movil'
+include ':app'
