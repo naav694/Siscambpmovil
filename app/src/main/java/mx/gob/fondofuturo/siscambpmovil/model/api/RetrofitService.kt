@@ -1,13 +1,14 @@
-package mx.gob.fondofuturo.siscambpmovil.s
+package mx.gob.fondofuturo.siscambpmovil.model.api
 
+import org.json.JSONObject
 import retrofit2.http.GET
-import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface RetrofitService {
 
-    @GET("action=1&usuario={user}&contrasena={contrasena}")
+    @GET("lecturas_service.php?accion=1")
     suspend fun getUser(
-        @Path("user") user: String,
-        @Path("contrasena") password: String
-    ) : Int
+        @Query("usuario") user: String,
+        @Query("contrasena") password: String
+    ) : String
 }

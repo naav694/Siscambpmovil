@@ -6,12 +6,13 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import mx.gob.fondofuturo.siscambpmovil.model.data.User
 import mx.gob.fondofuturo.siscambpmovil.model.repository.Repository
+import org.json.JSONObject
 
 class LoginViewModel : ViewModel() {
 
     private val mUser: MutableLiveData<User> = MutableLiveData()
 
-    val response: LiveData<Int> = Transformations
+    val response: LiveData<String> = Transformations
         .switchMap(mUser) {
             Repository.getUser(it)
         }
