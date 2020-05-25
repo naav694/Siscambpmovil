@@ -6,21 +6,29 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import cn.pedant.SweetAlert.SweetAlertDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import mx.gob.fondofuturo.siscambpmovil.R
 import mx.gob.fondofuturo.siscambpmovil.model.data.Arrendatario
 import mx.gob.fondofuturo.siscambpmovil.model.data.User
+import mx.gob.fondofuturo.siscambpmovil.presenter.callback.ArrendatarioCallback
+import mx.gob.fondofuturo.siscambpmovil.presenter.implementation.ArrendatarioPresenter
 import mx.gob.fondofuturo.siscambpmovil.view.adapter.ArrendatarioAdapter
 import mx.gob.fondofuturo.siscambpmovil.view.dialog.ArrendatarioFilterDialog
+import mx.gob.fondofuturo.siscambpmovil.view.dialog.CustomDialogs
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 class ArrendatarioActivity : BaseActivity(),
-    ArrendatarioFilterDialog.ArrendatarioFilterDialogListener {
+    ArrendatarioFilterDialog.ArrendatarioFilterDialogListener, ArrendatarioCallback,
+    ArrendatarioAdapter.ArrendatarioAdapterListener {
 
     private var mAdapter: ArrendatarioAdapter? = null
+    private var mPresenter: ArrendatarioPresenter? = null
+    private var mProgress: SweetAlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +36,8 @@ class ArrendatarioActivity : BaseActivity(),
         supportActionBar!!.title = user!!.mUser
         val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
         supportActionBar!!.subtitle = simpleDateFormat.format(Date())
+        mPresenter = ArrendatarioPresenter(this, this)
+        mPresenter!!.getArrendatarios("")
     }
 
     override fun getLayoutId(): Int {
@@ -35,8 +45,9 @@ class ArrendatarioActivity : BaseActivity(),
     }
 
     private fun initRecyclerView(arrayList: ArrayList<Arrendatario>) {
-        mainRecycler.layoutManager = LinearLayoutManager(this)
-        mAdapter = ArrendatarioAdapter(arrayList)
+        val layoutManager = LinearLayoutManager(this)
+        mainRecycler.layoutManager = layoutManager
+        mAdapter = ArrendatarioAdapter(arrayList, this)
         mainRecycler.adapter = mAdapter
     }
 
@@ -53,12 +64,42 @@ class ArrendatarioActivity : BaseActivity(),
                 ArrendatarioFilterDialog.show(fragmentManager, "filter_arrendatario")
                 true
             }
+            R.id.btnLogOut -> {
+                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
+                true
+            }
             else -> super.onContextItemSelected(item)
         }
     }
 
     override fun onFilterClicked(manzana: String) {
-        Toast.makeText(this, "manzana: $manzana", Toast.LENGTH_LONG).show()
+        mPresenter!!.getArrendatarios(manzana)
+    }
+
+    override fun onLoading(message: String) {
+        mProgress = CustomDialogs.sweetLoading(this, message)
+        mProgress!!.show()
+    }
+
+    override fun onSuccess(arrayListArrendatario: ArrayList<Arrendatario>) {
+        mProgress!!.dismissWithAnimation()
+        if (mAdapter == null) {
+            initRecyclerView(arrayListArrendatario)
+        } else {
+            mAdapter!!.updateArrendatarios(arrayListArrendatario)
+        }
+    }
+
+    override fun onError(message: String) {
+        mProgress!!.dismissWithAnimation()
+        CustomDialogs.sweetError(this, message)
+    }
+
+    override fun onArrendatarioClicked(arrendatario: Arrendatario) {
+        val i = Intent(this, LecturaActivity::class.java)
+        i.putExtra("arrendatario", arrendatario)
+        startActivity(i)
     }
 
 }

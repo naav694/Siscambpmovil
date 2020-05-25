@@ -6,6 +6,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Arrendatario(
     var idArrendatario: Int = 0,
+    var razonSocial: String = "",
     var auxContable: Int = 0,
     var mRFC: String? = null,
     var mDomicilio: String? = null,
@@ -16,7 +17,7 @@ data class Arrendatario(
     var mObservacion: String? = null,
     var mRepresentante: String? = null,
     var idArrendador: Int = 0,
-    var mPropietario: String? = null,
+    var mArrendador: String? = null,
     var mSuperficie: Double = 0.0,
     var mLote: String? = null,
     var mManzana: String? = null,

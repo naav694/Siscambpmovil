@@ -41,6 +41,7 @@ class LoginActivity : BaseActivity(), LoginCallback {
         val intent = Intent(this, ArrendatarioActivity::class.java)
         intent.putExtra("user", user)
         startActivity(intent)
+        finish()
     }
 
     override fun onError(message: String) {

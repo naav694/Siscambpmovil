@@ -47,8 +47,8 @@ class LecturaActivity : BaseActivity() {
 
     private fun openCamera() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if (takePictureIntent.resolveActivity(packageManager) != null) {
-            /*val timeStamp =
+        /*if (takePictureIntent.resolveActivity(packageManager) != null) {
+            val timeStamp =
                 SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
                     .format(Date())
             nombreFoto = "seguimiento_movil_$timeStamp"
@@ -73,7 +73,5 @@ class LecturaActivity : BaseActivity() {
             } catch (e: IOException) {
                 e.printStackTrace()
             }*/
-        }
     }
-
 }

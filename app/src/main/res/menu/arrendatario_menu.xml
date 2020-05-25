@@ -6,4 +6,10 @@
         android:icon="@drawable/filter_50_white"
         android:title="@string/filtro_manzanas"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/btnLogOut"
+        android:icon="@drawable/logout_50_white"
+        android:title="@string/cerrar_sesion"
+        app:showAsAction="ifRoom" />
 </menu>

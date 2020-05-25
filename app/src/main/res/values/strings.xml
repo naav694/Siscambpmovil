@@ -7,4 +7,6 @@
     <string name="image_logo_login">IMAGE LOGO LOGIN</string>
     <string name="filtro_manzanas">Filtro manzanas</string>
     <string name="camara">Camara</string>
+    <string name="cerrar_sesion">Cerrar sesión</string>
+    <string name="enviar_lectura">Enviar lectura</string>
 </resources>
