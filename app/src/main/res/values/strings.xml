@@ -5,4 +5,6 @@
     <string name="contrasena">Contraseña</string>
     <string name="recordar_credenciales">Recordar credenciales</string>
     <string name="image_logo_login">IMAGE LOGO LOGIN</string>
+    <string name="filtro_manzanas">Filtro manzanas</string>
+    <string name="camara">Camara</string>
 </resources>

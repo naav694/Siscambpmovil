@@ -5,12 +5,17 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:elevation="4dp"
         android:theme="@style/ToolBarTheme.ToolBarStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/Theme.MaterialComponents.Light.NoActionBar"
+        app:subtitleTextAppearance="@style/Toolbar.SubTitleText"
+        app:titleTextAppearance="@style/Toolbar.TitleText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

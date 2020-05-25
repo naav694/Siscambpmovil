@@ -37,7 +37,7 @@
         app:layout_constraintTop_toBottomOf="@id/loginToolbar">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/loginInputUsuario"
+            android:id="@+id/layoutInputUser"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -50,40 +50,46 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editInputUser"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:singleLine="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/loginInputContrasena"
+            android:id="@+id/layoutInputPassword"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="@string/contrasena"
-
-            app:layout_constraintEnd_toEndOf="@id/loginInputUsuario"
-            app:layout_constraintStart_toStartOf="@id/loginInputUsuario"
-            app:layout_constraintTop_toBottomOf="@id/loginInputUsuario"
+            app:layout_constraintEnd_toEndOf="@id/layoutInputUser"
+            app:layout_constraintStart_toStartOf="@id/layoutInputUser"
+            app:layout_constraintTop_toBottomOf="@id/layoutInputUser"
             app:layout_constraintVertical_bias="0.0">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editInputPassword"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:singleLine="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <CheckBox
+            android:id="@+id/checkBoxRemember"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:text="@string/recordar_credenciales"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/loginInputContrasena"
-            app:layout_constraintStart_toStartOf="@+id/loginInputContrasena"
-            app:layout_constraintTop_toBottomOf="@id/loginInputContrasena" />
+            app:layout_constraintEnd_toEndOf="@+id/layoutInputPassword"
+            app:layout_constraintStart_toStartOf="@+id/layoutInputPassword"
+            app:layout_constraintTop_toBottomOf="@id/layoutInputPassword" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
