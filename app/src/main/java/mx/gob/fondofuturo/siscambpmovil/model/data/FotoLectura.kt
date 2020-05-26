@@ -1,6 +1,7 @@
 package mx.gob.fondofuturo.siscambpmovil.model.data
 
 data class FotoLectura(
-    var lecturaFoto: String,
-    var nombreFoto: String
+    var photoLectura: String = "",
+    var photoName: String = "",
+    var photoMobilePath: String = ""
 )

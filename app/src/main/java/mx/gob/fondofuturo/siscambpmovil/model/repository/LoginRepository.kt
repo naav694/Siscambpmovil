@@ -15,20 +15,24 @@ object LoginRepository {
         user: String,
         password: String
     ): BaseResponse<User> {
-        val url = "http://192.168.1.67/lecturas_web/w_service/lecturas_service.php?accion=1" +
+        val url = "http://192.168.1.67/w_service/lecturas_service.php?accion=1" +
                 "&usuario=" + user +
                 "&contrasena=" + password
         val request: RequestFuture<JSONObject> =
             VolleyClient.makeRequest(context, url, Request.Method.GET, JSONObject())
         val jResponse = request.get()
-        val userResponse = jResponse.getJSONArray("user")
         val resultResponse = jResponse.getString("result")
-        val mUser = User(
-            userResponse.getJSONObject(0).getString("USUARIO"),
-            "",
-            userResponse.getJSONObject(0).getString("NOMBRE")
-        )
-        return BaseResponse(resultResponse, mUser)
+        return if (resultResponse.isEmpty()) {
+            val userResponse = jResponse.getJSONObject("user")
+            val mUser = User(
+                userResponse.getString("USUARIO"),
+                "",
+                userResponse.getString("NOMBRE")
+            )
+            BaseResponse(resultResponse, mUser)
+        } else {
+            BaseResponse(resultResponse, User())
+        }
     }
 
 }

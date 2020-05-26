@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.widget.Toast
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.pedant.SweetAlert.SweetAlertDialog
 import kotlinx.android.synthetic.main.activity_main.*
@@ -20,7 +18,6 @@ import mx.gob.fondofuturo.siscambpmovil.view.dialog.ArrendatarioFilterDialog
 import mx.gob.fondofuturo.siscambpmovil.view.dialog.CustomDialogs
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class ArrendatarioActivity : BaseActivity(),
     ArrendatarioFilterDialog.ArrendatarioFilterDialogListener, ArrendatarioCallback,
