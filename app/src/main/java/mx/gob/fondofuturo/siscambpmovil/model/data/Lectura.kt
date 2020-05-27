@@ -2,7 +2,9 @@ package mx.gob.fondofuturo.siscambpmovil.model.data
 
 data class Lectura(
     var fkArrendatario: Int,
-    var lecturaActual: Int,
-    var mUsuario: String,
-    var fotoLectura: FotoLectura? = null
+    var lecturaAnterior: Double,
+    var lecturaActual: Double,
+    var lecturaObservaciones: String,
+    var mUser: String,
+    var photoLectura: FotoLectura? = null
 )

@@ -26,7 +26,7 @@ class ArrendatarioAdapter(
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ArrendatarioViewHolder, position: Int) {
         val arrendatario = arrendatarioArrayList[position]
-        holder.textIdArrendatario.text = "id Arrendatario: ${arrendatario.idArrendatario}"
+        holder.textArrendador.text = "Arrendador: ${arrendatario.mArrendador}"
         holder.textRazonSocial.text = "Razon social: ${arrendatario.razonSocial}"
         holder.textDomicilio.text = "Domicilio: ${arrendatario.mDomicilio}"
         holder.textManzana.text = "Manzana: ${arrendatario.mManzana}"
@@ -47,7 +47,7 @@ class ArrendatarioAdapter(
     }
 
     class ArrendatarioViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val textIdArrendatario: TextView = view.textIdArrendatario
+        val textArrendador: TextView = view.textArrendador
         val textRazonSocial: TextView = view.textRazonSocial
         val textDomicilio: TextView = view.textDomicilio
         val textManzana: TextView = view.textManzana

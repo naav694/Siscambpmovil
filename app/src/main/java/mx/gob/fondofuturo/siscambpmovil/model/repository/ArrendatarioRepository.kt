@@ -22,9 +22,11 @@ object ArrendatarioRepository {
             val jsonObject = jArrayResponse.getJSONObject(i)
             val arrendatario = Arrendatario()
             arrendatario.idArrendatario = jsonObject.getInt("PK_ARRENDATARIO")
+            arrendatario.mArrendador = jsonObject.getString("ARRENDADOR")
             arrendatario.razonSocial = jsonObject.getString("RAZON_SOCIAL")
             arrendatario.mDomicilio = jsonObject.getString("DOMICILIO")
             arrendatario.mManzana = jsonObject.getString("MANZANA")
+            arrendatario.mLote = jsonObject.getString("LOTE")
             arrayListArrendatario.add(arrendatario)
         }
         return BaseResponse(jResponse.getString("result"), arrayListArrendatario)

@@ -69,7 +69,8 @@
             app:layout_constraintEnd_toEndOf="@id/layoutInputUser"
             app:layout_constraintStart_toStartOf="@id/layoutInputUser"
             app:layout_constraintTop_toBottomOf="@id/layoutInputUser"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintVertical_bias="0.0"
+            app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editInputPassword"

@@ -26,11 +26,12 @@ class ArrendatarioActivity : BaseActivity(),
     private var mAdapter: ArrendatarioAdapter? = null
     private var mPresenter: ArrendatarioPresenter? = null
     private var mProgress: SweetAlertDialog? = null
+    private var mUser: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val user = intent.extras!!.getParcelable<User>("user")
-        supportActionBar!!.title = user!!.mUser
+        mUser = intent.extras!!.getParcelable<User>("user")
+        supportActionBar!!.title = mUser!!.mLogin
         val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
         supportActionBar!!.subtitle = simpleDateFormat.format(Date())
         mPresenter = ArrendatarioPresenter(this, this)
@@ -96,6 +97,7 @@ class ArrendatarioActivity : BaseActivity(),
     override fun onArrendatarioClicked(arrendatario: Arrendatario) {
         val i = Intent(this, LecturaActivity::class.java)
         i.putExtra("arrendatario", arrendatario)
+        i.putExtra("user", mUser)
         startActivity(i)
     }
 

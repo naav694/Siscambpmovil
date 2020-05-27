@@ -30,6 +30,7 @@
             android:id="@+id/editLecturaAnt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:maxLines="1"
             android:singleLine="true" />
 
@@ -50,8 +51,31 @@
             android:id="@+id/editLecturaAct"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
             android:maxLines="1"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:nextFocusDown="@id/btnEnviarLectura"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutLecturaObservaciones"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="Capture sus observaciones"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@id/layoutLecturaAct"
+        app:layout_constraintStart_toStartOf="@id/layoutLecturaAct"
+        app:layout_constraintTop_toBottomOf="@id/layoutLecturaAct">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editLecturaObservaciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:lines="4"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -63,9 +87,9 @@
         android:layout_marginBottom="8dp"
         android:contentDescription="Image lectura"
         app:layout_constraintBottom_toTopOf="@id/btnEnviarLectura"
-        app:layout_constraintEnd_toEndOf="@id/layoutLecturaAct"
-        app:layout_constraintStart_toStartOf="@id/layoutLecturaAct"
-        app:layout_constraintTop_toBottomOf="@id/layoutLecturaAct" />
+        app:layout_constraintEnd_toEndOf="@id/layoutLecturaObservaciones"
+        app:layout_constraintStart_toStartOf="@id/layoutLecturaObservaciones"
+        app:layout_constraintTop_toBottomOf="@id/layoutLecturaObservaciones" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnEnviarLectura"
