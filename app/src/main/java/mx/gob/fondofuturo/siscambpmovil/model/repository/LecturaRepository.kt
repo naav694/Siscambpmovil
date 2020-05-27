@@ -5,12 +5,13 @@ import com.android.volley.Request
 import com.android.volley.toolbox.RequestFuture
 import mx.gob.fondofuturo.siscambpmovil.model.api.VolleyClient
 import mx.gob.fondofuturo.siscambpmovil.model.data.Lectura
+import mx.gob.fondofuturo.siscambpmovil.support.SharedQuery
 import org.json.JSONObject
 
 object LecturaRepository {
 
     fun sendLecturaToWeb(context: Context, lectura: Lectura): String {
-        val url = "http://192.168.1.67/w_service/lecturas_service.php?accion=3"
+        val url = "http://${SharedQuery.getPrefer(context, "server")}/w_service/lecturas_service.php?accion=3"
         val jsonObject = createJSONLectura(lectura)
         val request: RequestFuture<JSONObject> =
             VolleyClient.makeRequest(context, url, Request.Method.POST, jsonObject)

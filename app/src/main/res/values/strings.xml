@@ -9,4 +9,5 @@
     <string name="camara">Camara</string>
     <string name="cerrar_sesion">Cerrar sesión</string>
     <string name="enviar_lectura">Enviar lectura</string>
+    <string name="configuracion">Configuración</string>
 </resources>

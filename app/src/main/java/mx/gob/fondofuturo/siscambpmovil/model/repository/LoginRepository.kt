@@ -6,6 +6,7 @@ import com.android.volley.toolbox.RequestFuture
 import mx.gob.fondofuturo.siscambpmovil.model.BaseResponse
 import mx.gob.fondofuturo.siscambpmovil.model.api.VolleyClient
 import mx.gob.fondofuturo.siscambpmovil.model.data.User
+import mx.gob.fondofuturo.siscambpmovil.support.SharedQuery
 import org.json.JSONObject
 
 object LoginRepository {
@@ -15,7 +16,11 @@ object LoginRepository {
         user: String,
         password: String
     ): BaseResponse<User> {
-        val url = "http://192.168.1.67/w_service/lecturas_service.php?accion=1" +
+        val server = SharedQuery.getPrefer(context, "server")
+        if(server!!.isEmpty()) {
+            return BaseResponse("Debe configurar el servidor primero", User())
+        }
+        val url = "http://" + server + "/w_service/lecturas_service.php?accion=1" +
                 "&usuario=" + user +
                 "&contrasena=" + password
         val request: RequestFuture<JSONObject> =

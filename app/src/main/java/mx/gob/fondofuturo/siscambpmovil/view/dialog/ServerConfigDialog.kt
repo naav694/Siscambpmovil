@@ -3,12 +3,11 @@ package mx.gob.fondofuturo.siscambpmovil.view.dialog
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
-import android.text.InputType
-import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import kotlinx.android.synthetic.main.layout_arrendatario_filter_dialog.view.*
+import kotlinx.android.synthetic.main.dialog_server_config.view.*
 import mx.gob.fondofuturo.siscambpmovil.R
+import mx.gob.fondofuturo.siscambpmovil.support.SharedQuery
 
 object ServerConfigDialog : DialogFragment() {
 
@@ -16,12 +15,17 @@ object ServerConfigDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-            val inflater = ArrendatarioFilterDialog.requireActivity().layoutInflater
+            val inflater = ServerConfigDialog.requireActivity().layoutInflater
             val dialogView = inflater.inflate(R.layout.dialog_server_config, null)
+            dialogView.editServerConfig.setText(SharedQuery.getPrefer(context!!, "server"))
             builder.setView(dialogView)
                 .setMessage("Escriba el nombre del servidor o IP")
                 .setPositiveButton("Guardar") { dialog, _ ->
-                    dialogView.
+                    SharedQuery.setPrefer(
+                        context!!,
+                        "server",
+                        dialogView.editServerConfig.text.toString()
+                    )
                     dialog.dismiss()
                 }
                 .setNegativeButton("Cerrar") { dialog, _ ->
