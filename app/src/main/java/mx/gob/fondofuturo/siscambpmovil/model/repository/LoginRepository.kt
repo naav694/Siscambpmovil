@@ -30,8 +30,9 @@ object LoginRepository {
         return if (resultResponse.isEmpty()) {
             val userResponse = jResponse.getJSONObject("user")
             val mUser = User(
+                userResponse.getInt("PK_USUARIO"),
                 userResponse.getString("USUARIO"),
-                "",
+                userResponse.getString("CONTRASENA"),
                 userResponse.getString("NOMBRE")
             )
             BaseResponse(resultResponse, mUser)

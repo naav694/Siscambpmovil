@@ -16,14 +16,16 @@ object LecturaRepository {
         val request: RequestFuture<JSONObject> =
             VolleyClient.makeRequest(context, url, Request.Method.POST, jsonObject)
         val jResponse = request.get()
-        return jResponse.getString("result")
+        return jResponse.getString("response")
     }
 
     private fun createJSONLectura(lectura: Lectura): JSONObject {
         val jsonObject = JSONObject()
         jsonObject.put("fkArrendatario", lectura.fkArrendatario)
-        jsonObject.put("lecturaActual", lectura.lecturaActual)
-        jsonObject.put("user", lectura.mUser)
+        jsonObject.put("lecturaAct", lectura.lecturaActual)
+        jsonObject.put("lecturaAnt", lectura.lecturaAnterior)
+        jsonObject.put("comment", lectura.lecturaObservaciones)
+        jsonObject.put("user", lectura.idUser)
         val jsonPhoto = JSONObject()
         jsonPhoto.put("photoName", lectura.photoLectura!!.photoName)
         jsonPhoto.put("photoStr", lectura.photoLectura!!.photoLectura)

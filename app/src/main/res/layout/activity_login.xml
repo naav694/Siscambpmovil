@@ -53,9 +53,8 @@
                 android:id="@+id/editInputUser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:inputType="textEmailSubject"/>
+                android:inputType="textEmailSubject"
+                android:lines="1"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -76,9 +75,9 @@
                 android:id="@+id/editInputPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword"
+                android:lines="1"
+                android:nextFocusDown="@id/loginButton" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

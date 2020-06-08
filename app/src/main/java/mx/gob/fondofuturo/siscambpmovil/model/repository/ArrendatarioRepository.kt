@@ -27,6 +27,7 @@ object ArrendatarioRepository {
             arrendatario.mDomicilio = jsonObject.getString("DOMICILIO")
             arrendatario.mManzana = jsonObject.getString("MANZANA")
             arrendatario.mLote = jsonObject.getString("LOTE")
+            arrendatario.lecturaAnt = jsonObject.optDouble("LECTURA_ANT")
             arrayListArrendatario.add(arrendatario)
         }
         return BaseResponse(jResponse.getString("result"), arrayListArrendatario)

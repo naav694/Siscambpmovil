@@ -3,6 +3,7 @@ package mx.gob.fondofuturo.siscambpmovil.view.activity
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -36,8 +37,7 @@ class LecturaActivity : BaseActivity(), LecturaCallback {
     private var mPresenter: LecturaPresenter? = null
     private var mProgress: SweetAlertDialog? = null
     private var photoLectura: FotoLectura? = null
-    private var nombreFoto: String? = null
-    private var rutaArchivo: File? = null
+    private var photoFile: File? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,11 +46,23 @@ class LecturaActivity : BaseActivity(), LecturaCallback {
         val user = intent.extras!!.getParcelable<User>("user")
         val arrendatario = intent.extras!!.getParcelable<Arrendatario>("arrendatario")
         mPresenter = LecturaPresenter(this, this)
+        savedInstanceState?.run {
+            photoFile = getString("currentPhotoPath")?.let {
+                File(it)
+            }
+        }
         initComponents(user!!, arrendatario!!)
     }
 
     override fun getLayoutId(): Int {
         return R.layout.activity_lectura
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        photoFile?.run {
+            outState.putString("photoFile", absolutePath)
+        }
     }
 
     private fun initComponents(user: User, arrendatario: Arrendatario) {
@@ -77,7 +89,7 @@ class LecturaActivity : BaseActivity(), LecturaCallback {
                 arrendatario.lecturaAnt,
                 lecturaAct.toDouble(),
                 editLecturaObservaciones.text.toString(),
-                user.mLogin,
+                user.idUser,
                 photoLectura
             )
             mPresenter!!.sendLecturaRx(lectura)
@@ -119,65 +131,62 @@ class LecturaActivity : BaseActivity(), LecturaCallback {
                 }
                 true
             }
-
             else -> super.onContextItemSelected(item)
         }
     }
 
     private fun openCamera() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if (takePictureIntent.resolveActivity(packageManager) != null) {
-            val timeStamp =
-                SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
-                    .format(Date())
-            nombreFoto = "lecturas_movil_$timeStamp"
-            try {
-                rutaArchivo = createImageFile()
-                val photoURI = FileProvider.getUriForFile(
-                    this,
-                    "mx.gob.fondofuturo.siscambpmovil.fileprovider",
-                    rutaArchivo!!
-                )
-                takePictureIntent.putExtra(
-                    MediaStore.EXTRA_SCREEN_ORIENTATION,
-                    ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-                )
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                startActivityForResult(takePictureIntent, PHOTOS_REQUEST)
-            } catch (e: IOException) {
-                e.printStackTrace()
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            takePictureIntent.resolveActivity(packageManager)?.also {
+                photoFile = try {
+                    createImageFile()
+                } catch (ex: IOException) {
+                    null
+                }
+                photoFile.also {
+                    val photoURI = FileProvider.getUriForFile(
+                        this,
+                        "mx.gob.fondofuturo.siscambpmovil.fileprovider",
+                        it!!
+                    )
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(takePictureIntent, PHOTOS_REQUEST)
+                }
             }
         }
     }
 
     @Throws(IOException::class)
     private fun createImageFile(): File? {
-        val storage = File(
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                .toString() + "/Lecturas"
+        val timeStamp =
+            SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
+                .format(Date())
+        val storageDir: File? =
+            getExternalFilesDir("${Environment.DIRECTORY_PICTURES}/Lecturas")
+        storageDir!!.mkdirs()
+        return File.createTempFile(
+            "lecturas_movil_$timeStamp",
+            ".jpeg",
+            storageDir
         )
-        val file = File(storage.absolutePath + "/" + nombreFoto + ".jpeg")
-        storage.mkdirs()
-        return if (file.createNewFile()) file else null
     }
 
     private fun savePhoto() {
         try {
             val fileInputStream =
-                FileInputStream(rutaArchivo!!.absolutePath)
+                FileInputStream(photoFile!!.absolutePath)
             val bytesArray =
-                ByteArray(rutaArchivo!!.length().toInt())
+                ByteArray(photoFile!!.length().toInt())
             fileInputStream.read(bytesArray)
             fileInputStream.close()
             val photoStr: String = Convertions.convertByteToString(bytesArray)
             photoLectura = FotoLectura(
                 photoStr,
-                "$nombreFoto.jpeg",
-                rutaArchivo!!.absolutePath
+                photoFile!!.name,
+                photoFile!!.absolutePath
             )
             Glide.with(this)
-                .load(rutaArchivo!!.absolutePath).into(imageLectura)
-            imageLectura.visibility = View.VISIBLE
+                .load(photoFile!!.absolutePath).into(imageLectura)
             imageLectura.visibility = View.VISIBLE
         } catch (e: Exception) {
             e.printStackTrace()

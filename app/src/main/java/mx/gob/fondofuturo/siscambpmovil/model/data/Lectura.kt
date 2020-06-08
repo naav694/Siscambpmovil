@@ -5,6 +5,6 @@ data class Lectura(
     var lecturaAnterior: Double,
     var lecturaActual: Double,
     var lecturaObservaciones: String,
-    var mUser: String,
+    var idUser: Int,
     var photoLectura: FotoLectura? = null
 )
