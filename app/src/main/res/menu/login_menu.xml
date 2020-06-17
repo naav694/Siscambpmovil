@@ -5,5 +5,6 @@
         android:id="@+id/btnServerConfig"
         android:icon="@drawable/server_64_white"
         android:title="@string/configuracion"
+        android:tooltipText="Configuración"
         app:showAsAction="ifRoom" />
 </menu>
