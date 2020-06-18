@@ -11,7 +11,7 @@ import org.json.JSONObject
 object LecturaRepository {
 
     fun sendLecturaToWeb(context: Context, lectura: Lectura): String {
-        val url = "http://${SharedQuery.getPrefer(context, "server")}/w_service/lecturas_service.php?accion=3"
+        val url = "http://${SharedQuery.getPrefer(context, "server")}/lecturas_web/w_service/lecturas_service.php?accion=3"
         val jsonObject = createJSONLectura(lectura)
         val request: RequestFuture<JSONObject> =
             VolleyClient.makeRequest(context, url, Request.Method.POST, jsonObject)

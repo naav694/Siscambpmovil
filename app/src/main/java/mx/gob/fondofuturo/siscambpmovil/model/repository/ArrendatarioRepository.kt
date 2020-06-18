@@ -12,7 +12,7 @@ import org.json.JSONObject
 object ArrendatarioRepository {
 
     fun getArrendatarios(context: Context, manzana: String): BaseResponse<ArrayList<Arrendatario>> {
-        val url = "http://${SharedQuery.getPrefer(context, "server")}/w_service/lecturas_service.php?accion=2&manzana=$manzana"
+        val url = "http://${SharedQuery.getPrefer(context, "server")}/lecturas_web/w_service/lecturas_service.php?accion=2&manzana=$manzana"
         val request: RequestFuture<JSONObject> =
             VolleyClient.makeRequest(context, url, Request.Method.GET, JSONObject())
         val jResponse = request.get()

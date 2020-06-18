@@ -20,7 +20,7 @@ object LoginRepository {
         if(server!!.isEmpty()) {
             return BaseResponse("Debe configurar el servidor primero", User())
         }
-        val url = "http://" + server + "/w_service/lecturas_service.php?accion=1" +
+        val url = "http://" + server + "/lecturas_web/w_service/lecturas_service.php?accion=1" +
                 "&usuario=" + user +
                 "&contrasena=" + password
         val request: RequestFuture<JSONObject> =
