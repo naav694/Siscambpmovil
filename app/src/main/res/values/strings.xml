@@ -10,4 +10,10 @@
     <string name="cerrar_sesion">Cerrar sesión</string>
     <string name="enviar_lectura">Enviar lectura</string>
     <string name="configuracion">Configuración</string>
+    <string name="image_status">IMAGE STATUS</string>
+    <string name="arrendador_p">Arrendador:</string>
+    <string name="arrendatario_p">Arrendatario:</string>
+    <string name="direccion_p">Dirección:</string>
+    <string name="manzana_p">Manzana:</string>
+    <string name="captura_lectura">Captura lectura</string>
 </resources>

@@ -2,39 +2,73 @@ package mx.gob.fondofuturo.siscambpmovil.view.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import cn.pedant.SweetAlert.SweetAlertDialog
-import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.toolbar.*
 import mx.gob.fondofuturo.siscambpmovil.R
-import mx.gob.fondofuturo.siscambpmovil.model.data.User
-import mx.gob.fondofuturo.siscambpmovil.presenter.callback.LoginCallback
-import mx.gob.fondofuturo.siscambpmovil.presenter.implementation.LoginPresenter
-import mx.gob.fondofuturo.siscambpmovil.support.Permissions
-import mx.gob.fondofuturo.siscambpmovil.view.dialog.ArrendatarioFilterDialog
+import mx.gob.fondofuturo.siscambpmovil.databinding.ActivityLoginBinding
+import mx.gob.fondofuturo.siscambpmovil.model.response.LecturaResult
 import mx.gob.fondofuturo.siscambpmovil.view.dialog.CustomDialogs
 import mx.gob.fondofuturo.siscambpmovil.view.dialog.ServerConfigDialog
+import mx.gob.fondofuturo.siscambpmovil.viewmodel.LoginViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
-class LoginActivity : BaseActivity(), LoginCallback {
+class LoginActivity : AppCompatActivity() {
 
-    private var mPresenter: LoginPresenter? = null
+    private val loginViewModel: LoginViewModel by viewModel()
     private var mProgress: SweetAlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mPresenter = LoginPresenter(this, this)
-        loginButton.setOnClickListener {
-            mPresenter!!.onLoginRx(
-                editInputUser.text.toString(),
-                editInputPassword.text.toString()
-            )
-        }
+        val binding = DataBindingUtil.setContentView<ActivityLoginBinding>(
+            this,
+            R.layout.activity_login
+        )
+        binding.lifecycleOwner = this
+        binding.loginViewModel = loginViewModel
+        setSupportActionBar(toolbar)
+
+        initObservers()
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_login
+    private fun initObservers() {
+        loginViewModel.onLogin.observe(this, Observer {
+            when (it) {
+                is LecturaResult.Loading -> {
+                    mProgress = CustomDialogs.sweetLoading(this, it.message)
+                    mProgress!!.show()
+                }
+                is LecturaResult.Success -> {
+                    mProgress!!.dismissWithAnimation()
+                    if (it.data.response!!.isEmpty()) {
+                        val intent = Intent(this, ArrendatarioActivity::class.java)
+                        intent.putExtra("user", it.data.user)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        mProgress!!.dismissWithAnimation()
+                        CustomDialogs.sweetError(this, it.data.response!!)
+                    }
+
+                }
+                is LecturaResult.Error -> {
+                    mProgress!!.dismissWithAnimation()
+                    CustomDialogs.sweetError(this, it.error)
+                }
+            }
+        })
+        loginViewModel.onToast.observe(this, Observer {
+            it.let {
+                Toast.makeText(this, "¡Configure datos del servidor primero!", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -51,30 +85,7 @@ class LoginActivity : BaseActivity(), LoginCallback {
                 true
             }
 
-            else -> super.onContextItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun onLoading(message: String) {
-        mProgress = CustomDialogs.sweetLoading(this, message)
-        mProgress!!.show()
-    }
-
-    override fun onSuccess(user: User) {
-        mProgress!!.dismissWithAnimation()
-        val intent = Intent(this, ArrendatarioActivity::class.java)
-        intent.putExtra("user", user)
-        startActivity(intent)
-        finish()
-    }
-
-    override fun onError(message: String) {
-        mProgress!!.dismissWithAnimation()
-        CustomDialogs.sweetError(this, message)
-    }
-
-    override fun onDestroy() {
-        mPresenter!!.onDispose()
-        super.onDestroy()
     }
 }

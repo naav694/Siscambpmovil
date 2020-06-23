@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
@@ -26,10 +27,10 @@ class ArrendatarioAdapter(
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ArrendatarioViewHolder, position: Int) {
         val arrendatario = arrendatarioArrayList[position]
-        holder.textArrendador.text = "Arrendador: ${arrendatario.mArrendador}"
-        holder.textRazonSocial.text = "Razon social: ${arrendatario.razonSocial}"
-        holder.textDomicilio.text = "Domicilio: ${arrendatario.mDomicilio}"
-        holder.textManzana.text = "Manzana: ${arrendatario.mManzana}"
+        holder.textArrendador.text = arrendatario.mArrendador
+        holder.textArrendatario.text = arrendatario.razonSocial
+        holder.textDomicilio.text = arrendatario.mDomicilio
+        holder.textManzana.text = arrendatario.mManzana
         holder.btnCapturaLectura.setOnClickListener {
             mListener.onArrendatarioClicked(arrendatario)
         }
@@ -48,9 +49,10 @@ class ArrendatarioAdapter(
 
     class ArrendatarioViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textArrendador: TextView = view.textArrendador
-        val textRazonSocial: TextView = view.textRazonSocial
+        val textArrendatario: TextView = view.textArrendatario
         val textDomicilio: TextView = view.textDomicilio
         val textManzana: TextView = view.textManzana
         val btnCapturaLectura: MaterialButton = view.btnCapturaLectura
+        val imageStatus: ImageView = view.imageStatus
     }
 }

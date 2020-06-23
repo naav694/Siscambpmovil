@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="array_manzana">
+        <item>I</item>
+        <item>II</item>
+        <item>III</item>
+        <item>IV</item>
+        <item>V</item>
+        <item>VI</item>
+        <item>VII</item>
+        <item>VIII</item>
+        <item>IX</item>
+        <item>X</item>
+        <item>XI</item>
+        <item>XII</item>
+        <item>XII-A</item>
+        <item>XIII</item>
+        <item>XIV</item>
+        <item>XV</item>
+        <item>XV-A</item>
+        <item>XVI</item>
+        <item>XVII</item>
+        <item>XVI-A</item>
+        <item>XVIII</item>
+        <item>XIX</item>
+        <item>XX</item>
+        <item>XXI</item>
+        <item>I  Z.C.</item>
+        <item>II  Z.C.</item>
+        <item>III  Z.C.</item>
+        <item>ZON. HAB.</item>
+    </string-array>
+</resources>

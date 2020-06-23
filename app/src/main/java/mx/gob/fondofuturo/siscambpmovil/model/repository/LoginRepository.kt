@@ -1,44 +1,29 @@
 package mx.gob.fondofuturo.siscambpmovil.model.repository
 
-import android.content.Context
-import com.android.volley.Request
-import com.android.volley.toolbox.RequestFuture
-import mx.gob.fondofuturo.siscambpmovil.model.BaseResponse
-import mx.gob.fondofuturo.siscambpmovil.model.api.VolleyClient
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import mx.gob.fondofuturo.siscambpmovil.model.api.LecturaService
 import mx.gob.fondofuturo.siscambpmovil.model.data.User
-import mx.gob.fondofuturo.siscambpmovil.support.SharedQuery
-import org.json.JSONObject
+import mx.gob.fondofuturo.siscambpmovil.model.repository.interfaces.ILoginRepository
+import mx.gob.fondofuturo.siscambpmovil.model.response.LecturaResult
+import mx.gob.fondofuturo.siscambpmovil.model.response.LoginResponse
 
-object LoginRepository {
+class LoginRepository(private val lecturaService: LecturaService) : ILoginRepository {
 
-    fun onLogin(
-        context: Context,
-        user: String,
-        password: String
-    ): BaseResponse<User> {
-        val server = SharedQuery.getPrefer(context, "server")
-        if(server!!.isEmpty()) {
-            return BaseResponse("Debe configurar el servidor primero", User())
-        }
-        val url = "http://" + server + "/lecturas_web/w_service/lecturas_service.php?accion=1" +
-                "&usuario=" + user +
-                "&contrasena=" + password
-        val request: RequestFuture<JSONObject> =
-            VolleyClient.makeRequest(context, url, Request.Method.GET, JSONObject())
-        val jResponse = request.get()
-        val resultResponse = jResponse.getString("result")
-        return if (resultResponse.isEmpty()) {
-            val userResponse = jResponse.getJSONObject("user")
-            val mUser = User(
-                userResponse.getInt("PK_USUARIO"),
-                userResponse.getString("USUARIO"),
-                userResponse.getString("CONTRASENA"),
-                userResponse.getString("NOMBRE")
-            )
-            BaseResponse(resultResponse, mUser)
-        } else {
-            BaseResponse(resultResponse, User())
-        }
+    @ExperimentalCoroutinesApi
+    override fun onLogin(
+        baseURL: String,
+        usuario: String,
+        contrasena: String
+    ): Flow<LecturaResult<LoginResponse<User>>> = flow {
+        emit(LecturaResult.Loading("Iniciando sesión..."))
+        emit(LecturaResult.Success(lecturaService.getUser(baseURL, "1", usuario, contrasena)))
+    }.flowOn(Dispatchers.IO).catch {
+        emit(LecturaResult.Error(it.message!!))
     }
 
 }

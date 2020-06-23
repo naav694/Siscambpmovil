@@ -1,9 +1,7 @@
 package mx.gob.fondofuturo.siscambpmovil.view.activity
 
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -11,20 +9,25 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import androidx.databinding.DataBindingUtil
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.bumptech.glide.Glide
+import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_lectura.*
+import kotlinx.android.synthetic.main.toolbar.*
 import mx.gob.fondofuturo.siscambpmovil.R
+import mx.gob.fondofuturo.siscambpmovil.databinding.ActivityLecturaBinding
 import mx.gob.fondofuturo.siscambpmovil.model.data.Arrendatario
 import mx.gob.fondofuturo.siscambpmovil.model.data.FotoLectura
 import mx.gob.fondofuturo.siscambpmovil.model.data.Lectura
 import mx.gob.fondofuturo.siscambpmovil.model.data.User
-import mx.gob.fondofuturo.siscambpmovil.presenter.callback.LecturaCallback
-import mx.gob.fondofuturo.siscambpmovil.presenter.implementation.LecturaPresenter
-import mx.gob.fondofuturo.siscambpmovil.support.Convertions
-import mx.gob.fondofuturo.siscambpmovil.support.Permissions
+import mx.gob.fondofuturo.siscambpmovil.model.response.LecturaResult
+import mx.gob.fondofuturo.siscambpmovil.support.*
 import mx.gob.fondofuturo.siscambpmovil.view.dialog.CustomDialogs
+import mx.gob.fondofuturo.siscambpmovil.viewmodel.LecturaViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
@@ -32,30 +35,36 @@ import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class LecturaActivity : BaseActivity(), LecturaCallback {
+class LecturaActivity : AppCompatActivity()/* BaseActivity(), LecturaCallback*/ {
 
-    private var mPresenter: LecturaPresenter? = null
+    private val lecturaViewModel: LecturaViewModel by viewModel()
+
     private var mProgress: SweetAlertDialog? = null
     private var photoLectura: FotoLectura? = null
     private var photoFile: File? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+        val binding = DataBindingUtil.setContentView<ActivityLecturaBinding>(
+            this,
+            R.layout.activity_lectura
+        )
+        binding.lifecycleOwner = this
+        binding.lecturaViewModel = lecturaViewModel
+        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Captura de lectura"
         val user = intent.extras!!.getParcelable<User>("user")
         val arrendatario = intent.extras!!.getParcelable<Arrendatario>("arrendatario")
-        mPresenter = LecturaPresenter(this, this)
+
         savedInstanceState?.run {
             photoFile = getString("currentPhotoPath")?.let {
                 File(it)
             }
         }
         initComponents(user!!, arrendatario!!)
-    }
-
-    override fun getLayoutId(): Int {
-        return R.layout.activity_lectura
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -92,24 +101,35 @@ class LecturaActivity : BaseActivity(), LecturaCallback {
                 user.idUser,
                 photoLectura
             )
-            mPresenter!!.sendLecturaRx(lectura)
+            lecturaViewModel.setLectura(lectura)
+            lecturaViewModel.lectura.observe(this, Observer {
+                when (it) {
+                    is LecturaResult.Loading -> {
+                        mProgress = CustomDialogs.sweetLoading(this, it.message)
+                        mProgress!!.show()
+                    }
+                    is LecturaResult.Success -> {
+                        mProgress!!.dismissWithAnimation()
+                        if (it.data.response!!.isEmpty()) {
+                            CustomDialogs.sweetSuccessCloseActivity(
+                                this,
+                                "Lectura enviada correctamente",
+                                this
+                            )
+                        } else {
+                            CustomDialogs.sweetError(this, it.data.response!!)
+                        }
+                    }
+                    is LecturaResult.Error -> {
+                        mProgress!!.dismissWithAnimation()
+                        CustomDialogs.sweetError(this, it.error)
+                    }
+                }
+            })
         }
     }
 
-    override fun onSuccess() {
-        mProgress!!.dismissWithAnimation()
-        CustomDialogs.sweetSuccessCloseActivity(this, "Lectura enviada correctamente", this)
-    }
 
-    override fun onLoading(message: String) {
-        mProgress = CustomDialogs.sweetLoading(this, message)
-        mProgress!!.show()
-    }
-
-    override fun onError(message: String) {
-        mProgress!!.dismissWithAnimation()
-        CustomDialogs.sweetError(this, message)
-    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater

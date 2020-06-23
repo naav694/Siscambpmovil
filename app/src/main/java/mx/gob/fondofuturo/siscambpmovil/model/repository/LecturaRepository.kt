@@ -1,35 +1,27 @@
 package mx.gob.fondofuturo.siscambpmovil.model.repository
 
-import android.content.Context
-import com.android.volley.Request
-import com.android.volley.toolbox.RequestFuture
-import mx.gob.fondofuturo.siscambpmovil.model.api.VolleyClient
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import mx.gob.fondofuturo.siscambpmovil.model.api.LecturaService
 import mx.gob.fondofuturo.siscambpmovil.model.data.Lectura
-import mx.gob.fondofuturo.siscambpmovil.support.SharedQuery
-import org.json.JSONObject
+import mx.gob.fondofuturo.siscambpmovil.model.repository.interfaces.ILecturaRepository
+import mx.gob.fondofuturo.siscambpmovil.model.response.LecturaResponse
+import mx.gob.fondofuturo.siscambpmovil.model.response.LecturaResult
 
-object LecturaRepository {
+class LecturaRepository(private val lecturaService: LecturaService) : ILecturaRepository {
 
-    fun sendLecturaToWeb(context: Context, lectura: Lectura): String {
-        val url = "http://${SharedQuery.getPrefer(context, "server")}/lecturas_web/w_service/lecturas_service.php?accion=3"
-        val jsonObject = createJSONLectura(lectura)
-        val request: RequestFuture<JSONObject> =
-            VolleyClient.makeRequest(context, url, Request.Method.POST, jsonObject)
-        val jResponse = request.get()
-        return jResponse.getString("response")
-    }
-
-    private fun createJSONLectura(lectura: Lectura): JSONObject {
-        val jsonObject = JSONObject()
-        jsonObject.put("fkArrendatario", lectura.fkArrendatario)
-        jsonObject.put("lecturaAct", lectura.lecturaActual)
-        jsonObject.put("lecturaAnt", lectura.lecturaAnterior)
-        jsonObject.put("comment", lectura.lecturaObservaciones)
-        jsonObject.put("user", lectura.idUser)
-        val jsonPhoto = JSONObject()
-        jsonPhoto.put("photoName", lectura.photoLectura!!.photoName)
-        jsonPhoto.put("photoStr", lectura.photoLectura!!.photoLectura)
-        jsonObject.put("photo", jsonPhoto)
-        return jsonObject
+    @ExperimentalCoroutinesApi
+    override fun setLectura(
+        baseURL: String,
+        lectura: Lectura
+    ): Flow<LecturaResult<LecturaResponse>> = flow {
+        emit(LecturaResult.Loading("Enviando lectura..."))
+        emit(LecturaResult.Success(lecturaService.setLectura(baseURL, "3", lectura)))
+    }.flowOn(Dispatchers.IO).catch {
+        emit(LecturaResult.Error(it.message!!))
     }
 }

@@ -9,57 +9,108 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="#FFFCFB">
+
+        <TextView
+            android:id="@+id/textTitleArrendador"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/arrendador_p"
+            app:layout_constraintEnd_toStartOf="@id/imageStatus"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textArrendador"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/textTitleArrendador"
+            app:layout_constraintStart_toStartOf="@id/textTitleArrendador"
+            app:layout_constraintTop_toBottomOf="@id/textTitleArrendador" />
+
+        <ImageView
+            android:id="@+id/imageStatus"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/status_48_red"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/image_status" />
 
         <TextView
-            android:id="@+id/textRazonSocial"
+            android:id="@+id/textTitleArrendatario"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="@id/textArrendador"
+            android:text="@string/arrendatario_p"
+            app:layout_constraintEnd_toEndOf="@id/imageStatus"
             app:layout_constraintStart_toStartOf="@id/textArrendador"
             app:layout_constraintTop_toBottomOf="@id/textArrendador" />
+
+        <TextView
+            android:id="@+id/textArrendatario"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/textTitleArrendatario"
+            app:layout_constraintStart_toStartOf="@id/textTitleArrendatario"
+            app:layout_constraintTop_toBottomOf="@id/textTitleArrendatario" />
+
+        <TextView
+            android:id="@+id/textTitleDomicilio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/direccion_p"
+            app:layout_constraintEnd_toStartOf="@+id/textTitleManzana"
+            app:layout_constraintStart_toStartOf="@id/textArrendatario"
+            app:layout_constraintTop_toBottomOf="@id/textArrendatario" />
 
         <TextView
             android:id="@+id/textDomicilio"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="@id/textRazonSocial"
-            app:layout_constraintStart_toStartOf="@id/textRazonSocial"
-            app:layout_constraintTop_toBottomOf="@id/textRazonSocial" />
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/textTitleDomicilio"
+            app:layout_constraintStart_toStartOf="@id/textTitleDomicilio"
+            app:layout_constraintTop_toBottomOf="@id/textTitleDomicilio" />
+
+        <TextView
+            android:id="@+id/textTitleManzana"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/manzana_p"
+            app:layout_constraintEnd_toEndOf="@+id/textArrendatario"
+            app:layout_constraintTop_toTopOf="@+id/textTitleDomicilio" />
 
         <TextView
             android:id="@+id/textManzana"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="@id/textDomicilio"
-            app:layout_constraintStart_toStartOf="@id/textDomicilio"
-            app:layout_constraintTop_toBottomOf="@id/textDomicilio"
-            app:layout_constraintVertical_bias="0.0" />
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/textDomicilio"
+            app:layout_constraintEnd_toEndOf="@id/textTitleManzana"
+            app:layout_constraintStart_toStartOf="@id/textTitleManzana"
+            app:layout_constraintTop_toBottomOf="@id/textTitleManzana" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCapturaLectura"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:text="Captura lectura"
+            android:text="@string/captura_lectura"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textManzana" />
+            app:layout_constraintTop_toBottomOf="@+id/textDomicilio" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

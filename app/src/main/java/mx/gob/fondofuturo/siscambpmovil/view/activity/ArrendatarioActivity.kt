@@ -1,45 +1,76 @@
 package mx.gob.fondofuturo.siscambpmovil.view.activity
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.pedant.SweetAlert.SweetAlertDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import mx.gob.fondofuturo.siscambpmovil.R
 import mx.gob.fondofuturo.siscambpmovil.model.data.Arrendatario
 import mx.gob.fondofuturo.siscambpmovil.model.data.User
-import mx.gob.fondofuturo.siscambpmovil.presenter.callback.ArrendatarioCallback
-import mx.gob.fondofuturo.siscambpmovil.presenter.implementation.ArrendatarioPresenter
 import mx.gob.fondofuturo.siscambpmovil.view.adapter.ArrendatarioAdapter
 import mx.gob.fondofuturo.siscambpmovil.view.dialog.ArrendatarioFilterDialog
 import mx.gob.fondofuturo.siscambpmovil.view.dialog.CustomDialogs
+import androidx.lifecycle.Observer
+import kotlinx.android.synthetic.main.toolbar.*
+import mx.gob.fondofuturo.siscambpmovil.model.response.LecturaResult
+import mx.gob.fondofuturo.siscambpmovil.viewmodel.ArrendatarioViewModel
+import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ArrendatarioActivity : BaseActivity(),
-    ArrendatarioFilterDialog.ArrendatarioFilterDialogListener, ArrendatarioCallback,
+class ArrendatarioActivity : AppCompatActivity(),
+    ArrendatarioFilterDialog.ArrendatarioFilterDialogListener,
     ArrendatarioAdapter.ArrendatarioAdapterListener {
 
+    private val arrendatarioViewModel: ArrendatarioViewModel by viewModel()
+    private val sharedPreferences: SharedPreferences by inject()
+
     private var mAdapter: ArrendatarioAdapter? = null
-    private var mPresenter: ArrendatarioPresenter? = null
     private var mProgress: SweetAlertDialog? = null
     private var mUser: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mUser = intent.extras!!.getParcelable<User>("user")
+        setContentView(R.layout.activity_main)
+        setSupportActionBar(toolbar)
+        mUser = intent.extras!!.getParcelable("user")
         supportActionBar!!.title = mUser!!.mLogin
         val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
         supportActionBar!!.subtitle = simpleDateFormat.format(Date())
-        mPresenter = ArrendatarioPresenter(this, this)
-        mPresenter!!.getArrendatarios("")
-    }
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_main
+        arrendatarioViewModel.arrendatario.observe(this, Observer {
+            when (it) {
+                is LecturaResult.Loading -> {
+                    mProgress = CustomDialogs.sweetLoading(this, it.message)
+                    mProgress!!.show()
+                }
+                is LecturaResult.Success -> {
+                    mProgress!!.dismissWithAnimation()
+                    if (it.data.response!!.isEmpty()) {
+                        if (mAdapter == null) {
+                            initRecyclerView(it.data.data!!)
+                        } else {
+                            mAdapter!!.updateArrendatarios(it.data.data!!)
+                        }
+                    } else {
+                        CustomDialogs.sweetWarning(this, it.data.response!!)
+                    }
+                }
+                is LecturaResult.Error -> {
+                    mProgress!!.dismissWithAnimation()
+                    CustomDialogs.sweetError(this, it.error)
+                }
+            }
+        })
+
+        arrendatarioViewModel.setManzana("")
     }
 
     private fun initRecyclerView(arrayList: ArrayList<Arrendatario>) {
@@ -63,6 +94,11 @@ class ArrendatarioActivity : BaseActivity(),
                 true
             }
             R.id.btnLogOut -> {
+                with(sharedPreferences.edit()) {
+                    putString("usuario", "")
+                    putString("contrasena", "")
+                    commit()
+                }
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
                 true
@@ -72,26 +108,7 @@ class ArrendatarioActivity : BaseActivity(),
     }
 
     override fun onFilterClicked(manzana: String) {
-        mPresenter!!.getArrendatarios(manzana)
-    }
-
-    override fun onLoading(message: String) {
-        mProgress = CustomDialogs.sweetLoading(this, message)
-        mProgress!!.show()
-    }
-
-    override fun onSuccess(arrayListArrendatario: ArrayList<Arrendatario>) {
-        mProgress!!.dismissWithAnimation()
-        if (mAdapter == null) {
-            initRecyclerView(arrayListArrendatario)
-        } else {
-            mAdapter!!.updateArrendatarios(arrayListArrendatario)
-        }
-    }
-
-    override fun onError(message: String) {
-        mProgress!!.dismissWithAnimation()
-        CustomDialogs.sweetError(this, message)
+        arrendatarioViewModel.setManzana(manzana)
     }
 
     override fun onArrendatarioClicked(arrendatario: Arrendatario) {

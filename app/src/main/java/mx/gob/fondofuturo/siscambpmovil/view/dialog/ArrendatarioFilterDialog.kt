@@ -20,14 +20,9 @@ object ArrendatarioFilterDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-            val inflater = requireActivity().layoutInflater
+            val inflater = ArrendatarioFilterDialog.requireActivity().layoutInflater
             val dialogView = inflater.inflate(R.layout.layout_arrendatario_filter_dialog, null)
-            val manzanas = arrayOf("1", "2", "3", "4", "5")
-            val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
-                context!!,
-                R.layout.support_simple_spinner_dropdown_item,
-                manzanas
-            )
+            val adapter = ArrayAdapter.createFromResource(context!!, R.array.array_manzana, R.layout.support_simple_spinner_dropdown_item)
             dialogView.dropdownArrendatarioFilter.inputType = InputType.TYPE_NULL
             dialogView.dropdownArrendatarioFilter.setAdapter(adapter)
             builder.setView(dialogView)

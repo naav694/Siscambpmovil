@@ -1,105 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.activity.LecturaActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <include
-        android:id="@+id/lecturaToolbar"
-        layout="@layout/toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutLecturaAnt"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:hint="Lectura anterior"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/lecturaToolbar">
+        <variable
+            name="lecturaViewModel"
+            type="mx.gob.fondofuturo.siscambpmovil.viewmodel.LecturaViewModel" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editLecturaAnt"
-            android:layout_width="match_parent"
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".view.activity.LecturaActivity">
+
+        <include
+            android:id="@+id/lecturaToolbar"
+            layout="@layout/toolbar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutLecturaAnt"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:enabled="false"
-            android:maxLines="1"
-            android:textColor="@android:color/black"
-            android:singleLine="true" />
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:hint="Lectura anterior"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lecturaToolbar">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editLecturaAnt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="@android:color/black" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutLecturaAct"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="Lectura actual"
-        app:layout_constraintEnd_toEndOf="@id/layoutLecturaAnt"
-        app:layout_constraintStart_toStartOf="@id/layoutLecturaAnt"
-        app:layout_constraintTop_toBottomOf="@id/layoutLecturaAnt">
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editLecturaAct"
-            android:layout_width="match_parent"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutLecturaAct"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:nextFocusDown="@id/btnEnviarLectura"/>
+            android:layout_marginTop="8dp"
+            android:hint="Lectura actual"
+            app:layout_constraintEnd_toEndOf="@id/layoutLecturaAnt"
+            app:layout_constraintStart_toStartOf="@id/layoutLecturaAnt"
+            app:layout_constraintTop_toBottomOf="@id/layoutLecturaAnt">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editLecturaAct"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:nextFocusDown="@id/btnEnviarLectura"
+                android:singleLine="true" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutLecturaObservaciones"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="Capture sus observaciones"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="@id/layoutLecturaAct"
-        app:layout_constraintStart_toStartOf="@id/layoutLecturaAct"
-        app:layout_constraintTop_toBottomOf="@id/layoutLecturaAct">
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editLecturaObservaciones"
-            android:layout_width="match_parent"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutLecturaObservaciones"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
-            android:lines="4"/>
+            android:layout_marginTop="8dp"
+            android:hint="Capture sus observaciones"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="@id/layoutLecturaAct"
+            app:layout_constraintStart_toStartOf="@id/layoutLecturaAct"
+            app:layout_constraintTop_toBottomOf="@id/layoutLecturaAct">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editLecturaObservaciones"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:lines="4" />
 
-    <ImageView
-        android:id="@+id/imageLectura"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:contentDescription="Image lectura"
-        app:layout_constraintBottom_toTopOf="@id/btnEnviarLectura"
-        app:layout_constraintEnd_toEndOf="@id/layoutLecturaObservaciones"
-        app:layout_constraintStart_toStartOf="@id/layoutLecturaObservaciones"
-        app:layout_constraintTop_toBottomOf="@id/layoutLecturaObservaciones" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnEnviarLectura"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="@string/enviar_lectura"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <ImageView
+            android:id="@+id/imageLectura"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:contentDescription="Image lectura"
+            app:layout_constraintBottom_toTopOf="@id/btnEnviarLectura"
+            app:layout_constraintEnd_toEndOf="@id/layoutLecturaObservaciones"
+            app:layout_constraintStart_toStartOf="@id/layoutLecturaObservaciones"
+            app:layout_constraintTop_toBottomOf="@id/layoutLecturaObservaciones" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEnviarLectura"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/enviar_lectura"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
