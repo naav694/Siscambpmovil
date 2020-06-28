@@ -19,6 +19,7 @@ import mx.gob.fondofuturo.siscambpmovil.view.dialog.CustomDialogs
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.toolbar.*
 import mx.gob.fondofuturo.siscambpmovil.model.response.LecturaResult
+import mx.gob.fondofuturo.siscambpmovil.support.interfaces.ISessionHelper
 import mx.gob.fondofuturo.siscambpmovil.viewmodel.ArrendatarioViewModel
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -30,7 +31,7 @@ class ArrendatarioActivity : AppCompatActivity(),
     ArrendatarioAdapter.ArrendatarioAdapterListener {
 
     private val arrendatarioViewModel: ArrendatarioViewModel by viewModel()
-    private val sharedPreferences: SharedPreferences by inject()
+    private val sessionHelper: ISessionHelper by inject()
 
     private var mAdapter: ArrendatarioAdapter? = null
     private var mProgress: SweetAlertDialog? = null
@@ -94,11 +95,7 @@ class ArrendatarioActivity : AppCompatActivity(),
                 true
             }
             R.id.btnLogOut -> {
-                with(sharedPreferences.edit()) {
-                    putString("usuario", "")
-                    putString("contrasena", "")
-                    commit()
-                }
+                sessionHelper.setRememberSession(false)
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
                 true

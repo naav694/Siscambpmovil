@@ -4,13 +4,15 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import mx.gob.fondofuturo.siscambpmovil.support.interfaces.ISessionHelper
 import mx.gob.fondofuturo.siscambpmovil.model.api.LecturaService
-import mx.gob.fondofuturo.siscambpmovil.model.repository.ArrendatarioRepository
-import mx.gob.fondofuturo.siscambpmovil.model.repository.LecturaRepository
-import mx.gob.fondofuturo.siscambpmovil.model.repository.LoginRepository
+import mx.gob.fondofuturo.siscambpmovil.model.repository.implementation.ArrendatarioRepository
+import mx.gob.fondofuturo.siscambpmovil.model.repository.implementation.LecturaRepository
+import mx.gob.fondofuturo.siscambpmovil.model.repository.implementation.LoginRepository
 import mx.gob.fondofuturo.siscambpmovil.model.repository.interfaces.IArrendatarioRepository
 import mx.gob.fondofuturo.siscambpmovil.model.repository.interfaces.ILecturaRepository
 import mx.gob.fondofuturo.siscambpmovil.model.repository.interfaces.ILoginRepository
+import mx.gob.fondofuturo.siscambpmovil.support.SessionHelper
 import mx.gob.fondofuturo.siscambpmovil.viewmodel.ArrendatarioViewModel
 import mx.gob.fondofuturo.siscambpmovil.viewmodel.LecturaViewModel
 import mx.gob.fondofuturo.siscambpmovil.viewmodel.LoginViewModel
@@ -34,7 +36,7 @@ class MyApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@MyApplication)
-            modules(retrofitModule, repositoryModule, viewModelModule, sharedPreferencesModule)
+            modules(retrofitModule, repositoryModule, viewModelModule, sharedPreferencesModule, helperModule)
         }
     }
 
@@ -67,9 +69,25 @@ class MyApplication : Application() {
     }
 
     private val repositoryModule = module {
-        factory<IArrendatarioRepository> { ArrendatarioRepository(get()) }
-        factory<ILecturaRepository> { LecturaRepository(get()) }
-        factory<ILoginRepository> { LoginRepository(get()) }
+        factory<IArrendatarioRepository> {
+            ArrendatarioRepository(
+                get()
+            )
+        }
+        factory<ILecturaRepository> {
+            LecturaRepository(
+                get()
+            )
+        }
+        factory<ILoginRepository> {
+            LoginRepository(
+                get()
+            )
+        }
+    }
+
+    private val helperModule = module {
+        factory <ISessionHelper> { SessionHelper(get(), get()) }
     }
 
     private val viewModelModule = module {
@@ -84,6 +102,5 @@ class MyApplication : Application() {
             androidContext().getSharedPreferences("SharedLectura", Context.MODE_PRIVATE)
         }
     }
-
 
 }

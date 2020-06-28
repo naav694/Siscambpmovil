@@ -23,12 +23,12 @@ object ArrendatarioFilterDialog : DialogFragment() {
             val inflater = ArrendatarioFilterDialog.requireActivity().layoutInflater
             val dialogView = inflater.inflate(R.layout.layout_arrendatario_filter_dialog, null)
             val adapter = ArrayAdapter.createFromResource(context!!, R.array.array_manzana, R.layout.support_simple_spinner_dropdown_item)
-            dialogView.dropdownArrendatarioFilter.inputType = InputType.TYPE_NULL
-            dialogView.dropdownArrendatarioFilter.setAdapter(adapter)
+            dialogView.dropdownManzanaFilter.inputType = InputType.TYPE_NULL
+            dialogView.dropdownManzanaFilter.setAdapter(adapter)
             builder.setView(dialogView)
                 .setMessage("Seleccione una manzana")
                 .setPositiveButton("Filtrar") { dialog, _ ->
-                    mListener.onFilterClicked(dialogView.dropdownArrendatarioFilter.text.toString())
+                    mListener.onFilterClicked(dialogView.dropdownManzanaFilter.text.toString())
                     dialog.dismiss()
                 }
                 .setNegativeButton("Cerrar") { dialog, _ ->

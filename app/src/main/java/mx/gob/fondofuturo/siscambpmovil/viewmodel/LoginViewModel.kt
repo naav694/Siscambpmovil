@@ -1,21 +1,19 @@
 package mx.gob.fondofuturo.siscambpmovil.viewmodel
 
-import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import mx.gob.fondofuturo.siscambpmovil.support.interfaces.ISessionHelper
 import mx.gob.fondofuturo.siscambpmovil.model.data.User
 import mx.gob.fondofuturo.siscambpmovil.model.repository.interfaces.ILoginRepository
 import mx.gob.fondofuturo.siscambpmovil.model.response.LecturaResult
 import mx.gob.fondofuturo.siscambpmovil.model.response.LoginResponse
 
 class LoginViewModel(
-    private val loginRepository: ILoginRepository,
-    private val sharedPreferences: SharedPreferences
-) : ViewModel() {
+    private val loginRepository: ILoginRepository, sessionHelper: ISessionHelper
+) : BaseViewModel(sessionHelper) {
 
     var usuario: String = ""
     var contrasena: String = ""
@@ -28,19 +26,18 @@ class LoginViewModel(
     var onToast: LiveData<Boolean> = _onToast
 
     init {
-        if (sharedPreferences.getString("server", "").isNullOrEmpty()) {
+        if (sessionHelper.getBaseURL().isEmpty()) {
             _onToast.value = true
         } else {
-            val rememberedUser = sharedPreferences.getString("usuario", "")
-            val rememberedPass = sharedPreferences.getString("contrasena", "")
-            if (!rememberedUser.isNullOrEmpty() && !rememberedPass.isNullOrEmpty()) {
-                onLoginFlow(rememberedUser, rememberedPass)
+            if (sessionHelper.getRememberSession()) {
+                val user = sessionHelper.getUserSession()
+                onLoginFlow(user.mLogin, user.mPassword)
             }
         }
     }
 
     fun onLogin() {
-        if (sharedPreferences.getString("server", "").isNullOrEmpty()) {
+        if (sessionHelper.getBaseURL().isEmpty()) {
             _onToast.value = true
         } else {
             onLoginFlow(usuario, contrasena)
@@ -50,21 +47,17 @@ class LoginViewModel(
     private fun onLoginFlow(usuario: String, contrasena: String) {
         viewModelScope.launch {
             loginRepository.onLogin(
-                "http://${sharedPreferences.getString(
-                    "server",
-                    ""
-                )}/lecturas_web/w_service/lecturas_service.php",
+                "http://${sessionHelper.getBaseURL()}/lecturas_web/w_service/lecturas_service.php",
                 usuario,
                 contrasena
             ).collect {
-                if (rememberMe) {
-                    when (it) {
-                        is LecturaResult.Success -> {
-                            with(sharedPreferences.edit()) {
-                                putString("usuario", usuario)
-                                putString("contrasena", contrasena)
-                                commit()
-                            }
+                when (it) {
+                    is LecturaResult.Success -> {
+                        val user = it.data.user
+                        user!!.mPassword = contrasena
+                        sessionHelper.setUserSession(user)
+                        if (rememberMe) {
+                            sessionHelper.setRememberSession(rememberMe)
                         }
                     }
                 }

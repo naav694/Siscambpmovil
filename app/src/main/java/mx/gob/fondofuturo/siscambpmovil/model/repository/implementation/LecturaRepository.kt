@@ -1,4 +1,4 @@
-package mx.gob.fondofuturo.siscambpmovil.model.repository
+package mx.gob.fondofuturo.siscambpmovil.model.repository.implementation
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
