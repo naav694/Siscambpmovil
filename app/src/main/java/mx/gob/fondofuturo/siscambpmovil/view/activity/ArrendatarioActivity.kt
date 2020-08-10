@@ -1,25 +1,25 @@
 package mx.gob.fondofuturo.siscambpmovil.view.activity
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.pedant.SweetAlert.SweetAlertDialog
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.toolbar.*
 import mx.gob.fondofuturo.siscambpmovil.R
 import mx.gob.fondofuturo.siscambpmovil.model.data.Arrendatario
 import mx.gob.fondofuturo.siscambpmovil.model.data.User
+import mx.gob.fondofuturo.siscambpmovil.model.response.LecturaResult
+import mx.gob.fondofuturo.siscambpmovil.util.interfaces.ISessionHelper
 import mx.gob.fondofuturo.siscambpmovil.view.adapter.ArrendatarioAdapter
 import mx.gob.fondofuturo.siscambpmovil.view.dialog.ArrendatarioFilterDialog
 import mx.gob.fondofuturo.siscambpmovil.view.dialog.CustomDialogs
-import androidx.lifecycle.Observer
-import kotlinx.android.synthetic.main.toolbar.*
-import mx.gob.fondofuturo.siscambpmovil.model.response.LecturaResult
-import mx.gob.fondofuturo.siscambpmovil.support.interfaces.ISessionHelper
 import mx.gob.fondofuturo.siscambpmovil.viewmodel.ArrendatarioViewModel
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -69,6 +69,18 @@ class ArrendatarioActivity : AppCompatActivity(),
                     CustomDialogs.sweetError(this, it.error)
                 }
             }
+        })
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                mAdapter!!.filter.filter(newText)
+                return false
+            }
+
         })
 
         arrendatarioViewModel.setManzana("")

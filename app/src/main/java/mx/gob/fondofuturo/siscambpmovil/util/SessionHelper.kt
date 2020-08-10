@@ -1,9 +1,9 @@
-package mx.gob.fondofuturo.siscambpmovil.support
+package mx.gob.fondofuturo.siscambpmovil.util
 
 import android.content.SharedPreferences
 import com.google.gson.Gson
-import mx.gob.fondofuturo.siscambpmovil.support.interfaces.ISessionHelper
 import mx.gob.fondofuturo.siscambpmovil.model.data.User
+import mx.gob.fondofuturo.siscambpmovil.util.interfaces.ISessionHelper
 
 class SessionHelper(private val sharedPreferences: SharedPreferences, private val gson: Gson) :
     ISessionHelper {

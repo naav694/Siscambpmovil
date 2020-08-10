@@ -1,4 +1,4 @@
-package mx.gob.fondofuturo.siscambpmovil.support
+package mx.gob.fondofuturo.siscambpmovil.util
 
 const val STORAGE_REQUEST = 1000
 const val PHOTOS_REQUEST = 100

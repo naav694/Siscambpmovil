@@ -43,6 +43,12 @@ data class Arrendatario(
     var insFecha: String? = null,
     @Expose
     @SerializedName("LECTURA_ANT")
-    var lecturaAnt: Double = 0.0
+    var lecturaAnt: Double = 0.0,
+    @Expose
+    @SerializedName("MES_LECTURA")
+    var mesLectura: Int = 0,
+    @Expose
+    @SerializedName("ANIO_LECTURA")
+    var anioLectura: Int = 0
 ) : Parcelable
 

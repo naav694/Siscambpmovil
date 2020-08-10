@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.switchMap
-import mx.gob.fondofuturo.siscambpmovil.support.interfaces.ISessionHelper
 import mx.gob.fondofuturo.siscambpmovil.model.data.Arrendatario
 import mx.gob.fondofuturo.siscambpmovil.model.repository.interfaces.IArrendatarioRepository
 import mx.gob.fondofuturo.siscambpmovil.model.response.ArrendatarioResponse
 import mx.gob.fondofuturo.siscambpmovil.model.response.LecturaResult
+import mx.gob.fondofuturo.siscambpmovil.util.interfaces.ISessionHelper
 
 class ArrendatarioViewModel(
     private val arrendatarioRepository: IArrendatarioRepository, sessionHelper: ISessionHelper

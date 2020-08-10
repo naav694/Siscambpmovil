@@ -1,4 +1,4 @@
-package mx.gob.fondofuturo.siscambpmovil.support.interfaces
+package mx.gob.fondofuturo.siscambpmovil.util.interfaces
 
 import mx.gob.fondofuturo.siscambpmovil.model.data.User
 

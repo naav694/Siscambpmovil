@@ -12,9 +12,9 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.bumptech.glide.Glide
-import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_lectura.*
 import kotlinx.android.synthetic.main.toolbar.*
 import mx.gob.fondofuturo.siscambpmovil.R
@@ -24,7 +24,7 @@ import mx.gob.fondofuturo.siscambpmovil.model.data.FotoLectura
 import mx.gob.fondofuturo.siscambpmovil.model.data.Lectura
 import mx.gob.fondofuturo.siscambpmovil.model.data.User
 import mx.gob.fondofuturo.siscambpmovil.model.response.LecturaResult
-import mx.gob.fondofuturo.siscambpmovil.support.*
+import mx.gob.fondofuturo.siscambpmovil.util.*
 import mx.gob.fondofuturo.siscambpmovil.view.dialog.CustomDialogs
 import mx.gob.fondofuturo.siscambpmovil.viewmodel.LecturaViewModel
 import org.koin.android.viewmodel.ext.android.viewModel

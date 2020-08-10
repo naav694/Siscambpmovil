@@ -5,11 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import mx.gob.fondofuturo.siscambpmovil.support.interfaces.ISessionHelper
 import mx.gob.fondofuturo.siscambpmovil.model.data.User
 import mx.gob.fondofuturo.siscambpmovil.model.repository.interfaces.ILoginRepository
 import mx.gob.fondofuturo.siscambpmovil.model.response.LecturaResult
 import mx.gob.fondofuturo.siscambpmovil.model.response.LoginResponse
+import mx.gob.fondofuturo.siscambpmovil.util.interfaces.ISessionHelper
 
 class LoginViewModel(
     private val loginRepository: ILoginRepository, sessionHelper: ISessionHelper

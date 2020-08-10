@@ -1,4 +1,4 @@
-package mx.gob.fondofuturo.siscambpmovil.support
+package mx.gob.fondofuturo.siscambpmovil.util
 
 import android.util.Base64
 

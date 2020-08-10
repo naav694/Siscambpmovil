@@ -7,7 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_server_config.view.*
 import mx.gob.fondofuturo.siscambpmovil.R
-import mx.gob.fondofuturo.siscambpmovil.support.interfaces.ISessionHelper
+import mx.gob.fondofuturo.siscambpmovil.util.interfaces.ISessionHelper
 import org.koin.android.ext.android.inject
 
 object ServerConfigDialog : DialogFragment() {
