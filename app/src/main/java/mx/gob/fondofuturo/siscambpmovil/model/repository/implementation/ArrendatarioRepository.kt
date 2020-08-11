@@ -17,8 +17,7 @@ class ArrendatarioRepository(private val lecturaService: LecturaService) : IArre
     override fun getArrendatarios(
         baseURL: String,
         manzana: String
-    ): Flow<LecturaResult<ArrendatarioResponse<ArrayList<Arrendatario>>>> =
-        flow {
+    ): Flow<LecturaResult<ArrendatarioResponse<ArrayList<Arrendatario>>>> = flow {
             emit(LecturaResult.Loading("Obteniendo Arrendatarios..."))
             emit(LecturaResult.Success(lecturaService.getArrendatarios(baseURL, "2", manzana)))
         }.flowOn(Dispatchers.IO).catch {

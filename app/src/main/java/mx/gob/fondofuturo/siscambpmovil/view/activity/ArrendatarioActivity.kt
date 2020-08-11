@@ -1,5 +1,6 @@
 package mx.gob.fondofuturo.siscambpmovil.view.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -56,7 +57,7 @@ class ArrendatarioActivity : AppCompatActivity(),
                     mProgress!!.dismissWithAnimation()
                     if (it.data.response!!.isEmpty()) {
                         if (mAdapter == null) {
-                            initRecyclerView(it.data.data!!)
+                            initOrUpdateRecyclerView(it.data.data!!)
                         } else {
                             mAdapter!!.updateArrendatarios(it.data.data!!)
                         }
@@ -86,11 +87,16 @@ class ArrendatarioActivity : AppCompatActivity(),
         arrendatarioViewModel.setManzana("")
     }
 
-    private fun initRecyclerView(arrayList: ArrayList<Arrendatario>) {
-        val layoutManager = LinearLayoutManager(this)
-        mainRecycler.layoutManager = layoutManager
-        mAdapter = ArrendatarioAdapter(arrayList, this)
-        mainRecycler.adapter = mAdapter
+    private fun initOrUpdateRecyclerView(arrayList: ArrayList<Arrendatario>) {
+        if (mAdapter == null) {
+            val layoutManager = LinearLayoutManager(this)
+            mainRecycler.layoutManager = layoutManager
+            mAdapter = ArrendatarioAdapter(arrayList, this)
+            mainRecycler.adapter = mAdapter
+        } else {
+            mAdapter!!.updateArrendatarios(arrayList)
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -124,7 +130,14 @@ class ArrendatarioActivity : AppCompatActivity(),
         val i = Intent(this, LecturaActivity::class.java)
         i.putExtra("arrendatario", arrendatario)
         i.putExtra("user", mUser)
-        startActivity(i)
+        startActivityForResult(i, 1000)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1000 && resultCode == RESULT_OK) {
+            arrendatarioViewModel.setManzana("")
+        }
     }
 
 }

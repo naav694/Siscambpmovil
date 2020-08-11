@@ -1,6 +1,7 @@
 package mx.gob.fondofuturo.siscambpmovil.view.dialog
 
 import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.content.Context
 import cn.pedant.SweetAlert.SweetAlertDialog
 
@@ -11,6 +12,7 @@ object CustomDialogs {
             .setConfirmText("OK")
             .setConfirmClickListener {
                 it.dismiss()
+                activity.setResult(RESULT_OK)
                 activity.finish()
             }
             .show()
