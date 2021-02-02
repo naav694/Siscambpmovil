@@ -17,7 +17,7 @@ class LecturaViewModel(lecturaRepository: ILecturaRepository, sessionHelper: ISe
     var lectura: LiveData<LecturaResult<LecturaResponse>> = _lectura.switchMap {
         lecturaRepository.setLectura(
             "http://${sessionHelper.getBaseURL()}/lecturas_web/w_service/lecturas_service.php", it
-        ).asLiveData()
+        ).asLiveData() //Aqui estuvo la patsy
     }
 
     fun setLectura(lectura: Lectura) {
